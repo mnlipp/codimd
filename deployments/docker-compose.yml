@@ -9,17 +9,24 @@ services:
     volumes:
       - "database-data:/var/lib/postgresql/data"
     restart: always
+  plantuml:
+    image: plantuml/plantuml-server:jetty
+    ports:
+      - "3001:8080"
+    restart: always
   codimd:
     # you can use image or custom build below
-    image: nabo.codimd.dev/hackmdio/hackmd:2.0.0
+    image: localhost/hackmdio/hackmd:2.1.0
     # build:
     #   context: ..
     #   dockerfile: ./deployments/Dockerfile
     environment:
       - CMD_DB_URL=postgres://codimd:change_password@database/codimd
       - CMD_USECDN=false
+      - CMD_PLANTUML_SERVER=http://192.168.179.14:3001
     depends_on:
       - database
+      - plantuml
     ports:
       - "3000:3000"
     volumes:
