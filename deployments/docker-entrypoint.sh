@@ -17,5 +17,10 @@ if [[ "$NEED_MIGRATE" = "true" ]] && [[ -f .sequelizerc ]] ; then
     npx sequelize db:migrate
 fi
 
+# Use config.json if supplied
+if [ -r "/etc/codimd/config.json" ]; then
+    ln -s /etc/codimd/config.json .
+fi
+
 # start application
 node app.js
